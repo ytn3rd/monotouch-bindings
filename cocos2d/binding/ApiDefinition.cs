@@ -975,6 +975,7 @@ namespace MonoTouch.Cocos2D {
 
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface CCDirectorDelegate {
 		//[Export ("updateProjection")]
 		//void UpdateProjection ();
@@ -2016,11 +2017,11 @@ namespace MonoTouch.Cocos2D {
 		void AlignItemsHorizontally (float padding);
 
 		[Internal]
-		[Export ("alignItemsInColumns:")]
+		[Export ("alignItemsInColumns:", IsVariadic = true)]
 		void AlignItemsInColumns (NSNumber firstItem, IntPtr itemPtr);
 
-		[Internal]
-		[Export ("alignItemsInRows:")]
+		//[Internal]
+		[Export ("alignItemsInRows:", IsVariadic = true)]
 		void AlignItemsInRows (NSNumber firstItem, IntPtr itemPtr);
 
 		[Export ("handlerPriority")]
