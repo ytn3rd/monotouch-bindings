@@ -454,6 +454,7 @@ namespace Datatrans {
     //@protocol DTPaymentControllerDelegate <NSObject>
     [Model]
     [BaseType(typeof(NSObject), Name = "DTPaymentControllerDelegate")]
+    [Protocol]
     interface DtPaymentControllerDelegate {
 
         //- (void)paymentController:(DTPaymentController *)controller paymentRequestDidSucceed:(DTPaymentRequest *)request;
