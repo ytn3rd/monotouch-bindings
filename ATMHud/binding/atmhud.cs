@@ -192,6 +192,7 @@ namespace MonoTouch.AtmHud {
 	
 	[Model]
 	[BaseType (typeof (NSObject), Name="ATMHudDelegate")]
+	[Protocol]
 	interface AtmHudDelegate {
 		//- (void)userDidTapHud:(AtmHud *)_hud;
 		[Abstract]//, DelegateName ("UserTappedHud")]

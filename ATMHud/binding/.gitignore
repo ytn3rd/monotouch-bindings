@@ -1,2 +1,4 @@
 ATMHud
 *.a
+atmhud-sdk/build
+ATMHud.dll
