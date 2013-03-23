@@ -1,0 +1,6 @@
+*.dll
+*.a
+*.tar.gz
+ios
+BlueParabola-Beeblex-SDK-*/
+
