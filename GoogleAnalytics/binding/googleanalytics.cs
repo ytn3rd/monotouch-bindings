@@ -43,6 +43,7 @@ namespace GoogleAnalytics {
 	}
 
 	[BaseType (typeof (NSObject))]
+	[Protocol]
 	interface GAITracker {
 		[Export ("trackingId")]
 		string TrackingId { get;  }

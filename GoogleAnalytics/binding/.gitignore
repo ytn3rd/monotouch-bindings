@@ -3,3 +3,6 @@
 *.tar.gz
 list
 *.zip
+*.dll
+*.mdb
+
