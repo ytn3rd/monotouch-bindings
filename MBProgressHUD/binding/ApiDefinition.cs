@@ -235,6 +235,7 @@ namespace MBProgressHUD
 	// @protocol MBProgressHUDDelegate <NSObject>
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface MBProgressHUDDelegate {
 
 		//- (void)hudWasHidden:(MBProgressHUD *)hud;
