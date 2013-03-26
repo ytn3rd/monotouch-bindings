@@ -1,3 +1,5 @@
+*.dll
+*.mdb
 googleadmobadssdkios.zip
 libGoogleAdMobAds.a
 list
