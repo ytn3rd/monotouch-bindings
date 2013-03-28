@@ -16,5 +16,7 @@
 	<array>
 		<string>com.redpark.hobdb9</string>
 	</array>
+	<key>MinimumOSVersion</key>
+	<string>6.0</string>
 </dict>
 </plist>

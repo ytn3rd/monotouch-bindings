@@ -105,6 +105,7 @@ namespace Redpark
 	
 	[Model]
 	[BaseType(typeof(NSObject))]
+	[Protocol]
 	public interface RscMgrDelegate
 	{
 		// Redpark Serial Cable has been connected and/or application moved to foreground.
