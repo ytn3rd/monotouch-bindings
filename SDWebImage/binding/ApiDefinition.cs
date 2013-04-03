@@ -117,6 +117,7 @@ namespace SDWebImage
 
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface SDWebImageManagerDelegate
 	{
 		[Export ("imageManager:shouldDownloadImageForURL:"), DelegateName ("SDWebImageManagerDelegateCondition"), DefaultValue (true)]

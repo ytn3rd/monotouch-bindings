@@ -7,10 +7,12 @@ SMCS=/Developer/MonoTouch/usr/bin/smcs
 
 all: SDWebImage.dll
 
-SDWebImage: clean
-	git clone git@github.com:rs/SDWebImage.git
-	curl -L https://github.com/dalexsoto/MonoTouch-PSPDFKit-bindings/raw/master/AlexTouch.PSPDFKit/libarclite.a > libarclite.a
-	curl -L https://github.com/dalexsoto/MonoTouch-PSPDFKit-bindings/raw/master/AlexTouch.PSPDFKit/libarclite.linkwith.cs > libarclite.linkwith.cs
+libarclite.a:
+	https://github.com/dalexsoto/MonoTouch-PSPDFKit-bindings/raw/master/AlexTouch.PSPDFKit/libarclite.a > libarclite.a
+
+SDWebImage:
+	if ! test -d SDWebImage; then git clone git@github.com:rs/SDWebImage.git; else (cd SDWebImage && git clean -xfd && git pull); fi
+#	curl -L https://github.com/dalexsoto/MonoTouch-PSPDFKit-bindings/raw/master/AlexTouch.PSPDFKit/libarclite.linkwith.cs > libarclite.linkwith.cs
 
 libSDWebImage.a: SDWebImage
 	$(XBUILD) -project $(PROJECT) -target $(TARGET) -sdk iphoneos6.1 -configuration Release clean build
@@ -22,4 +24,6 @@ SDWebImage.dll: ApiDefinition.cs StructsAndEnums.cs Makefile SDWebImage.linkwith
 	$(SMCS) -noconfig -debug+ -debug:full -optimize- -out:SDWebImage.dll -resource:libarclite.a libarclite.linkwith.cs -resource:libSDWebImage.a SDWebImage.linkwith.cs StructsAndEnums.cs @ios/sources.list -target:library -unsafe+  -define:DEBUG -reference:/Developer/MonoTouch/usr/lib/mono/2.1/System.dll -reference:/Developer/MonoTouch/usr/lib/mono/2.1/monotouch.dll -reference:/Developer/MonoTouch/usr/lib/mono/2.1/System.Core.dll
 
 clean:
-	-rm -rf list ios SDWebImage *.a *dll *.mdb libarclite.linkwith.cs
+	-rm -rf list ios SDWebImage *.a *dll *.mdb
+
+.PHONY: SDWebImage
