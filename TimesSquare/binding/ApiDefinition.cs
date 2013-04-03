@@ -129,6 +129,7 @@ namespace TimesSquare.iOS
 
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface TSQCalendarViewDelegate {
 
 		[Export ("calendarView:shouldSelectDate:"), DelegateName ("TSQCalendarViewDelegateS"), DefaultValue (true)]
