@@ -3,3 +3,4 @@
 *.dylib
 *.tar.gz
 /ios/
+cocos2d-iphone-2.1-rc0a*
