@@ -60,6 +60,7 @@ namespace WEPopover
 	
 	[BaseType(typeof(NSObject))]
 	[Model]
+	[Protocol]
 	interface WEPopoverControllerDelegate
 	{
 		[Export("popoverControllerDidDismissPopover:")]
