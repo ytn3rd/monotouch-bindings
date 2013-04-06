@@ -8,7 +8,7 @@ SMCS=/Developer/MonoTouch/usr/bin/smcs
 all: SDWebImage.dll
 
 libarclite.a:
-	https://github.com/dalexsoto/MonoTouch-PSPDFKit-bindings/raw/master/AlexTouch.PSPDFKit/libarclite.a > libarclite.a
+	curl -L https://github.com/dalexsoto/MonoTouch-PSPDFKit-bindings/raw/master/AlexTouch.PSPDFKit/libarclite.a > libarclite.a
 
 SDWebImage:
 	if ! test -d SDWebImage; then git clone git@github.com:rs/SDWebImage.git; else (cd SDWebImage && git clean -xfd && git pull); fi
