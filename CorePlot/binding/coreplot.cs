@@ -62,6 +62,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface CPTAxisDelegate {
 		[Abstract, DelegateName ("CPTAxisPredicate"), DefaultValue (false)]
 		[Export ("axisShouldRelabel:")]
@@ -362,6 +363,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (CPTPlotDataSource))]
 	[Model]
+	[Protocol]
 	interface CPTBarPlotDataSource {
 		[Export ("barFillForBarPlot:recordIndex:")]
 		CPTFill GetBarFill (CPTBarPlot barPlot, int recordIndex);
@@ -372,6 +374,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (CPTPlotSpaceDelegate))]
 	[Model]
+	[Protocol]
 	interface CPTBarPlotDelegate {
 		[Abstract]
 		[Export ("barPlot:barWasSelectedAtRecordIndex:")]
@@ -485,31 +488,7 @@ namespace CorePlot {
 		[Export ("initWithCGColorSpace:")]
 		IntPtr Constructor (CGColorSpace colorSpace);
 	}
-		
-	[BaseType (typeof (NSObject))]
-	interface CPTConstrainedPosition {
-		[Export ("position")]
-		float Position { get; set;  }
 
-		[Export ("lowerBound")]
-		float LowerBound { get; set;  }
-
-		[Export ("upperBound")]
-		float UpperBound { get; set;  }
-
-		//[Export ("constraints")]
-		//CPTConstraints Constraints { get; set;  }
-
-		[Export ("initWithPosition:lowerBound:upperBound:")]
-		IntPtr Constructor (float newPosition, float newLowerBound, float newUpperBound);
-
-		[Export ("initWithAlignment:lowerBound:upperBound:")]
-		IntPtr Constructor (CPTAlignment newAlignment, float newLowerBound, float newUpperBound);
-
-		[Export ("adjustPositionForOldLowerBound:oldUpperBound:")]
-		void AdjustPosition (float oldLowerBound, float oldUpperBound);
-	}
-	
 	[BaseType (typeof (NSObject))]
 	interface CPTFill {
 		[Static]
@@ -1049,6 +1028,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (CPTPlotDataSource))]
 	[Model]
+	[Protocol]
 	interface CPTPieChartDataSource {
 		[Export ("sliceFillForPieChart:recordIndex:")]
 		CPTFill GetSliceFill (CPTPieChart pieChart, int recordIndex);
@@ -1065,6 +1045,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface CPTPieChartDelegate {
 		[Abstract]
 		[Export ("pieChart:sliceWasSelectedAtRecordIndex:")]
@@ -1106,6 +1087,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (NSObject))]
 	[Model][Abstract]
+	[Protocol]
 	interface CPTPlotDataSource {
 		[Export ("numberOfRecordsForPlot:")]
 		int NumberOfRecordsForPlot (CPTPlot plot);
@@ -1423,6 +1405,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface CPTPlotSpaceDelegate {
 		[DelegateName ("CPTEventPointPredicate"), DefaultValue (false)]
 		[Export ("plotSpace:shouldHandlePointingDeviceDownEvent:atPoint:")]
@@ -1654,6 +1637,7 @@ namespace CorePlot {
 	
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface CPTTextStyleDelegate {
 		[Abstract]
 		[Export ("textStyleDidChange:")]
@@ -1787,48 +1771,34 @@ namespace CorePlot {
 		float StickLength { get; set;  }
 	}
 
-	[BaseType (typeof (CPTTheme))]
+	[BaseType (typeof (CPTTheme), Name="_CPTXYTheme")]
 	interface CPTXYTheme {
 	}
 	
-	[BaseType (typeof (CPTXYTheme))]
+	[BaseType (typeof (CPTXYTheme), Name="_CPTDarkGradientTheme")]
 	interface CPTDarkGradientTheme {
 	}
 
-	[BaseType (typeof (CPTXYTheme))]
+	[BaseType (typeof (CPTXYTheme), Name="_CPTPlainBlackTheme")]
 	interface CPTPlainBlackTheme {
 	}
 
-	[BaseType (typeof (CPTXYTheme))]
+	[BaseType (typeof (CPTXYTheme), Name="_CPTPlainWhiteTheme")]
 	interface CPTPlainWhiteTheme {
 	}
 
-	[BaseType (typeof (CPTXYTheme))]
+	[BaseType (typeof (CPTXYTheme), Name="_CPTSlateTheme")]
 	interface CPTSlateTheme {
 	}
 
-	[BaseType (typeof (CPTXYTheme))]
+	[BaseType (typeof (CPTXYTheme), Name="_CPTStocksTheme")]
 	interface CPTStocksTheme {
-	}
-
-	[BaseType (typeof (CPTPlotSpace))]
-	interface CPTPolarPlotSpace {
 	}
 
 	[BaseType (typeof (CPTGraph))]
 	interface CPTXYGraph {
 		[Export ("initWithFrame:xScaleType:yScaleType:")]
 		IntPtr Constructor (RectangleF newFrame, CPTScaleType newXScale, CPTScaleType newYScale);
-	}
-	
-	[BaseType (typeof (CPTGraph))]
-	interface CPTDerivedXYGraph : CPTXYGraph {
-	}
-	
-	[BaseType (typeof (CPTGraph))]
-	interface CPTGraphXY {
-		[Export ("initWithFrame:xScaleType:yScaleType:")]
-		IntPtr Constructor (RectangleF frame, CPTScaleType xScaleType, CPTScaleType yScaleType);
 	}
 
 	[BaseType (typeof (CPTAxis))]
@@ -1854,6 +1824,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (CPTPlotDataSource))]
 	[Model]
+	[Protocol]
 	interface CPTScatterPlotDataSource {
 		[Export ("symbolsForScatterPlot:recordIndexRange:")]
 		CPTPlotSymbol [] GetSymbols (CPTScatterPlot plot, NSRange indexRange);
@@ -1865,6 +1836,7 @@ namespace CorePlot {
 
 	[BaseType (typeof (NSObject))]
 	[Model]
+	[Protocol]
 	interface CPTScatterPlotDelegate {
 		[Abstract]
 		[Export ("scatterPlot:plotSymbolWasSelectedAtRecordIndex:"), EventArgs ("CPTScatterSymbolSelected")]
