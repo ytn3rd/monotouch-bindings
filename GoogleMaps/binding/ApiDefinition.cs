@@ -130,6 +130,7 @@ namespace Google.Maps
 
 	[BaseType (typeof (NSObject), Name="GMSMapViewDelegate")]
 	[Model]
+	[Protocol]
 	interface MapViewDelegate {
 
 		[Export ("mapView:didChangeCameraPosition:"), EventArgs ("GMSCamera"), EventName ("ChangedCameraPosition")]
@@ -365,6 +366,7 @@ namespace Google.Maps
 	}
 
 	[BaseType (typeof (NSObject), Name="PolylineOptions")]
+	[Protocol]
 	interface PolylineOptions {
 
 		[Export ("path", ArgumentSemantic.Copy)]
