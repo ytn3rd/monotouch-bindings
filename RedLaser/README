@@ -18,3 +18,7 @@ Using RedLaser.dll with your own iOS App
 
 Simply add RedLaser.dll to your project's References in MonoDevelop and you are
 good to go!
+
+If you want to profit from the size reductions with the static registrar, you
+also need to add --dlsym:false to the additional mtouch arguments in the
+project's iOS Build options.
