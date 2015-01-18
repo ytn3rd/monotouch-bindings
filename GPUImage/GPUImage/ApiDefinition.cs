@@ -1,14 +1,309 @@
 using System;
 using System.Drawing;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using MonoTouch.CoreMedia;
-using MonoTouch.AVFoundation;
+using ObjCRuntime;
+using Foundation;
+using UIKit;
+using CoreGraphics;
+using CoreMedia;
+using AVFoundation;
 
 namespace GPUImage
 {
+    //public delegate void FrameProcessingCompletionCB(GPUImageOutput source, CMTime time);
+    //public delegate void ProcessImageWithCompletionHandlerDelegate(UIImage processedImage);
+
+    [BaseType(typeof(NSObject))]
+    public interface GPUImageOutput
+    {
+        [Export("shouldSmoothlyScaleOutput")]
+        bool ShouldSmoothlyScaleOutput { get; set; }
+
+        [Export("shouldIgnoreUpdatesToThisTarget")]
+        bool ShouldIgnoreUpdatesToThisTarget { get; set; }
+
+
+        //[Export("audioEncodingTarget")]
+        //@property(readwrite, nonatomic, retain) GPUImageMovieWriter *audioEncodingTarget { get; set; }
+
+        //[Export("targetToIgnoreForUpdates")]
+        //@property(readwrite, nonatomic, unsafe_unretained) id<GPUImageInput> targetToIgnoreForUpdates { get; set; }
+
+        //[Export("frameProcessingCompletionBlock", ArgumentSemantic.Copy)]
+        //FrameProcessingCompletionCB OnFrameProcessingComplete { get; set; }
+
+        [Export("enabled")]
+        bool Enabled { get; }
+
+        [Export("outputTextureOptions")]
+        GPUTextureOptions OutputTextureOptions { get; }
+
+        [Export("setInputTextureForTarget:atIndex:")]
+        void SetInputTextureForTarget(GPUImageInput target, int inputTextureIndex);
+
+        [Export("framebufferForOutput")]
+        GPUImageFramebuffer FramebufferForOutput { get; }
+
+        [Export("removeOutputFramebuffer")]
+        void RemoveOutputFramebuffer();
+
+        [Export("notifyTargetsAboutNewOutputTexture")]
+        void NotifyTargetsAboutNewOutputTexture();
+
+        [Export("targets")]
+        NSArray Targets { get; }
+
+
+        [Export("addTarget:")]
+        void AddTarget(NSObject newTarget);
+        // Todo should be GPUImageInput actually
+
+        [Export("addTarget:atTextureLocation:")]
+        void AddTarget(NSObject newTarget, int textureLocation);
+
+        [Export("removeTarget:")]
+        void RemoveTarget(NSObject targetToRemove);
+
+        [Export("removeAllTargets")]
+        void RemoveAllTargets();
+
+        [Export("forceProcessingAtSize:")]
+        void ForceProcessingAtSize(SizeF frameSize);
+
+        [Export("forceProcessingAtSizeRespectingAspectRatio:")]
+        void ForceProcessingAtSizeRespectingAspectRatio(SizeF frameSize);
+
+        [Export("useNextFrameForImageCapture")]
+        void UseNextFrameForImageCapture();
+
+        [Export("newCGImageFromCurrentlyProcessedOutput")]
+        CGImage NewCGImageFromCurrentlyProcessedOutput();
+
+        [Export("newCGImageByFilteringCGImage:")]
+        CGImage NewCGImageByFilteringCGImage(CGImage imageToFilter);
+
+        [Export("imageFromCurrentFramebuffer")]
+        UIImage ImageFromCurrentFramebuffer();
+
+        [Export("imageFromCurrentFramebufferWithOrientation:")]
+        UIImage ImageFromCurrentFramebufferWithOrientation(UIImageOrientation imageOrientation);
+
+        [Export("imageByFilteringImage:")]
+        UIImage ImageByFilteringImage(UIImage imageToFilter);
+
+        [Export("newCGImageByFilteringImage:")]
+        CGImage NewCGImageByFilteringImage(UIImage imageToFilter);
+
+        [Export("providesMonochromeOutput")]
+        bool ProvidesMonochromeOutput { get; }
+
+        /*
+
+        [Export("imageFromCurrentFramebuffer")]
+        UIImage ImageFromCurrentFrameBuffer();
+
+        //[Export("textureForOutput")]
+        //int TextureForOutput { get; }
+
+       
+
+        [Export("initializeOutputTextureIfNeeded")]
+        void InitializeOutputTextureIfNeeded();
+
+        [Export("deleteOutputTexture")]
+        void DeleteOutputTexture();
+
+        [Export("cleanupOutputImage")]
+        void CleanupOutputImage();
+
+
+
+
+        //[Export("imageFromCurrentlyProcessedOutput")]
+        //UIImage ImageFromCurrentlyProcessedOutput();
+
+
+       
+
+        [Export("imageFromCurrentlyProcessedOutputWithOrientation:")]
+        UIImage ImageFromCurrentlyProcessedOutputWithOrientation(UIImageOrientation imageOrientation);
+
+        [Export("newCGImageFromCurrentlyProcessedOutputWithOrientation:")]
+        CGImage NewCGImageFromCurrentlyProcessedOutputWithOrientation(UIImageOrientation imageOrientation);
+
+
+
+
+        [Export("newCGImageByFilteringCGImage:orientation:")]
+        CGImage NewCGImageByFilteringCGImage(CGImage imageToFilter, UIImageOrientation orientation);
+
+
+        [Export("prepareForImageCapture")]
+        void PrepareForImageCapture();
+
+        [Export("conserveMemoryForNextFrame")]
+        void ConserveMemoryForNextFrame();
+        */
+
+    }
+
+
+    [BaseType(typeof(NSObject))]
+    [Protocol]
+    public interface GPUImageInput
+    {
+        [Export("newFrameReadyAtTime:atIndex:")]
+        void NewFrameReadyAtTime(CMTime frameTime, int textureIndex);
+
+        [Export("setInputFramebuffer:atIndex:")]
+        void SetInputFramebuffer(GPUImageFramebuffer newInputFramebuffer, int textureIndex);
+
+        [Export("nextAvailableTextureIndex")]
+        int NextAvailableTextureIndex { get; }
+
+        [Export("setInputSize:atIndex:")]
+        void SetInputSize(SizeF newSize, int textureIndex);
+
+        [Export("setInputRotation:atIndex:")]
+        void SetInputRotation(GPUImageRotationMode newInputRotation, int textureIndex);
+
+
+        [Export("maximumOutputSize")]
+        SizeF MaximumOutputSize { get; }
+
+        [Export("endProcessing")]
+        void EndProcessing();
+
+        //[Export("shouldIgnoreUpdatesToThisTarget")]
+        //bool ShouldIgnoreUpdatesToThisTarget { get; }
+
+        //[Export("enabled")]
+        //bool Enabled { get; }
+
+        [Export("wantsMonochromeInput")]
+        bool WantsMonochromeInput { get; }
+
+        //[Export("setCurrentlyReceivingMonochromeInput:")]
+        //void SetCurrentlyReceivingMonochromeInput(bool newValue);
+
+
+        //[Export("setTextureDelegate:atIndex:")]
+        // void SetTextureDelegate(GPUImageTextureDelegate newTextureDelegate, int textureIndex);
+
+
+
+        //
+        ///[Export("conserveMemoryForNextFrame")]
+        //void ConserveMemoryForNextFrame();
+
+    }
+
+
+    [BaseType(typeof(NSObject))]
+    public interface GPUImageFramebuffer
+    {
+        [Export("size")]
+        SizeF Size { get; }
+
+        [Export("textureOptions")]
+        GPUTextureOptions TextureOptions { get; }
+
+        [Export("texture")]
+        uint Texture { get; }
+
+        [Export("missingFramebuffer")]
+        bool MissingFramebuffer { get; }
+
+        [Export("initWithSize:")]
+        IntPtr Constructor(SizeF framebufferSize);
+
+        [Export("initWithSize:textureOptions:onlyTexture:")]
+        IntPtr Constructor(SizeF framebufferSize, GPUTextureOptions textureOptions, bool onlyTexture);
+
+        [Export("initWithSize:overriddenTexture:")]
+        IntPtr Constructor(SizeF framebufferSize, uint inputTexture);
+
+
+        [Export("activateFramebuffer")]
+        void activateFramebuffer();
+
+        [Export("lock")]
+        void Lock();
+
+        [Export("unlock")]
+        void Unlock();
+
+        [Export("clearAllLocks")]
+        void ClearAllLocks();
+
+        [Export("disableReferenceCounting")]
+        void DisableReferenceCounting();
+
+        [Export("enableReferenceCounting")]
+        void EnableReferenceCounting();
+
+
+        [Export("newCGImageFromFramebufferContents")]
+        CGImage NewCGImageFromFramebufferContents();
+
+        [Export("restoreRenderTarget")]
+        void RestoreRenderTarget();
+
+
+
+
+        [Export("lockForReading")]
+        void LockForReading();
+
+        [Export("unlockAfterReading")]
+        void UnlockAfterReading();
+
+        [Export("bytesPerRow")]
+        uint BytesPerRow();
+
+        //(GLubyte *)
+        [Export("byteBuffer")]
+        IntPtr ByteBuffer();
+    }
+
+
+    [BaseType(typeof(GPUImageOutput))]
+    public interface GPUImagePicture
+    {
+        [Export("initWithURL:")]
+        IntPtr Constructor(NSUrl url);
+
+        [Export("initWithImage:")]
+        IntPtr Constructor(UIImage image);
+
+        [Export("initWithCGImage:")]
+        IntPtr Constructor(CGImage image);
+
+        [Export("initWithImage:smoothlyScaleOutput:")]
+        IntPtr Constructor(UIImage image, bool smoothlyScaleOutput);
+
+        [Export("initWithCGImage:smoothlyScaleOutput:")]
+        IntPtr Constructor(CGImage image, bool smoothlyScaleOutput);
+
+        [Export("processImage")]
+        void ProcessImage();
+
+        [Export("outputImageSize")]
+        SizeF OutputImageSize { get; }
+        // Set?
+
+        [Export("processImageWithCompletionHandler:")]
+        void ProcessImageWithCompletionHandler(Action completion);
+
+        //[Export("processImageUpToFilter:finalFilterInChain:withCompletionHandler:")]
+        //void ProcessImageWithCompletionHandler(GPUImageOutput finalFilterInChain, ProcessImageWithCompletionHandlerDelegate completion);
+
+
+
+        //- (void)processImageUpToFilter:(GPUImageOutput<GPUImageInput> *)finalFilterInChain withCompletionHandler:(void (^)(UIImage *processedImage))block;
+    }
+
+
+    /*
 	#region GPUImageMovie
 	[Model, BaseType (typeof (NSObject))]
 	public partial interface GPUImageMovieDelegate
@@ -387,26 +682,34 @@ namespace GPUImage
 		[Export("setCurrentlyReceivingMonochromeInput:")]
 		void SetCurrentlyReceivingMonochromeInput(bool newValue);
 	}
-	
-	[BaseType(typeof(UIView))]
-	public interface GPUImageView : GPUImageInput
-	{
-		[Export("initWithFrame:")]
-		IntPtr Constructor(RectangleF frame);
+	*/
+      
+    [BaseType(typeof(UIView))]
+    public interface GPUImageView : GPUImageInput
+    {
+        [Export("fillMode")]
+        GPUImageFillModeType FillMode { get; set; }
 
-		[Export("fillMode")]
-		GPUImageFillModeType FillMode { get; set; }
+        [Export("sizeInPixels")]
+        SizeF SizeInPixels { get; }
 
-		[Export("sizeInPixels")]
-		SizeF SizeInPixels { get; }
+        [Export("enabled")]
+        bool Enabled { get; set; }
 
-		[Export("enabled")]
-		bool Enabled { get; set; }
 
-		[Export("setBackgroundColorRed:green:blue:alpha:")]
-		void SetBackgroundColor(float redComponent, float green, float blue, float alpha);
-	}
+        //[Export("initWithFrame:")]
+        //IntPtr Constructor(RectangleF frame);
 
+
+        [Export("setBackgroundColorRed:green:blue:alpha:")]
+        void SetBackgroundColor(float red, float green, float blue, float alpha);
+
+        [Export("setCurrentlyReceivingMonochromeInput:")]
+        void SetCurrentlyReceivingMonochromeInput(bool newValue);
+
+    }
+
+    /*
 	[BaseType(typeof(NSObject))]
 	public interface GPUImageOpenGLESContext 
 	{
@@ -607,9 +910,173 @@ namespace GPUImage
 		[Export("outputImageSize")]
 		SizeF OutputImageSize { get; set; }
 	}
+ */
+    namespace Filters
+    {
+        [BaseType(typeof(GPUImageOutput))]
+        public interface GPUImageFilter : GPUImageInput
+        {
+            [Export("renderTarget")]
+            IntPtr RenderTarget { get; }
 
-	namespace Filters
-	{
+            [Export("preventRendering")]
+            bool PreventRendering { get; set; }
+
+            [Export("currentlyReceivingMonochromeInput")]
+            bool CurrentlyReceivingMonochromeInput { get; set; }
+
+            [Export("initWithVertexShaderFromString:fragmentShaderFromString:")]
+            IntPtr Constructor(string vertexShaderString, string fragmentShaderString);
+
+            [Export("initWithFragmentShaderFromString:")]
+            IntPtr Constructor(string fragmentShaderString);
+
+            //[Export("initWithFragmentShaderFromFile:")]
+            //IntPtr Constructor (string fragmentShaderFilename);
+
+
+            [Export("initializeAttributes")]
+            void InitializeAttributes();
+
+            [Export("setupFilterForSize:")]
+            void SetupFilterForSize(SizeF filterFrameSize);
+
+            [Export("rotatedSize:forIndex:")]
+            SizeF RotatedSize(SizeF sizeToRotate, int textureIndex);
+
+            [Export("rotatedPoint:forRotation:")]
+            PointF RotatedPoint(PointF pointToRotate, GPUImageRotationMode rotation);
+
+            [Export("sizeOfFBO")]
+            SizeF SizeOfFBO { get; }
+
+            //[Static, Export("textureCoordinatesForRotation:")]
+            //float [] TextureCoordinatesForRotation(GPUImageRotationMode rotationMode);
+
+            //- (void)renderToTextureWithVertices:(const GLfloat *)vertices textureCoordinates:(const GLfloat *)textureCoordinates;
+            //[Export("renderToTextureWithVertices:textureCoordinates:")]
+            //void RenderToTextureWithVertices(float[] vertices, float[] textureCoordinates);
+
+
+            [Export("informTargetsAboutNewFrameAtTime:")]
+            void InformTargetsAboutNewFrameAtTime(CMTime frameTime);
+
+            [Export("outputFrameSize")]
+            SizeF OutputFrameSize { get; }
+
+
+            [Export("setBackgroundColorRed:green:blue:alpha:")]
+            void SetBackgroundColor(float red, float green, float blue, float alpha);
+
+            [Export("setInteger:forUniformName:")]
+            void SetInteger(int val, string uniformName);
+
+            [Export("setFloat:forUniformName:")]
+            void SetFloat(float val, string uniformName);
+
+            [Export("setSize:forUniformName:")]
+            void SetSize(SizeF val, string uniformName);
+
+            [Export("setPoint:forUniformName:")]
+            void SetPoint(PointF val, string uniformName);
+
+            /*
+             *  [Export("")]
+            void setFloatVec3(GPUVector3)newVec3 forUniformName(NSString *)uniformName;
+
+            [Export("")]
+            void setFloatVec4(GPUVector4)newVec4 forUniform(NSString *)uniformName;
+
+            [Export("")]
+            void setFloatArray(float *)array length(GLsizei)count forUniform(NSString*)uniformName;
+
+
+            [Export("")]
+            void setMatrix3f(GPUMatrix3x3)matrix forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setMatrix4f(GPUMatrix4x4)matrix forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setFloat(float)floatValue forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setPoint(PointF)pointValue forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setSize(SizeF)sizeValue forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setVec3(GPUVector3)vectorValue forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setVec4(GPUVector4)vectorValue forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setFloatArray(float *)arrayValue length(GLsizei)arrayLength forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setInteger(int)intValue forUniform(int)uniform program(GLProgram *)shaderProgram;
+
+            [Export("")]
+            void setAndExecuteUniformStateCallbackAtIndex(int)uniform forProgram(GLProgram *)shaderProgram toBlock(dispatch_block_t)uniformStateBlock;
+
+            [Export("")]
+            void setUniformsForProgramAtIndex(NSUInteger)programIndex;
+            */
+
+            /*
+            //[Export("recreateFilterFBO")]
+            //void RecreateFilterFBO();
+
+            [Export("createFilterFBOofSize:")]
+            void CreateFilterFBOofSize(SizeF currentFBOSize);
+
+            [Export("destroyFilterFBO")]
+            void DestroyFilterFBO();
+
+            [Export("setFilterFBO")]
+            void SetFilterFBO();
+
+            [Export("setOutputFBO")]
+            void SetOutputFBO();
+
+            [Export("releaseInputTexturesIfNeeded")]
+            void ReleaseInputTexturesIfNeeded();
+
+            */
+
+
+
+        }
+
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageTwoInputFilter
+        {
+            [Export("disableFirstFrameCheck")]
+            void DisableFirstFrameCheck();
+
+            [Export("disableSecondFrameCheck")]
+            void DisableSecondFrameCheck();
+        }
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageLookupFilter
+        {
+
+        }
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageAlphaBlendFilter
+        {
+            [Export("mix")]
+            float Mix { get; set; }
+        }
+
+
+
+        /*
 		[BaseType(typeof(GPUImageOutput))]
 		public interface GPUImageFilter : GPUImageInput
 		{
@@ -687,50 +1154,7 @@ namespace GPUImage
 			
 			[Export("setPoint:forUniformName:")]
 			void SetPoint(int val, string uniformName);
-			
-/*
-			[Export("")]
-			void setFloatVec3(GPUVector3)newVec3 forUniformName(NSString *)uniformName;
-
-			[Export("")]
-			void setFloatVec4(GPUVector4)newVec4 forUniform(NSString *)uniformName;
-
-			[Export("")]
-			void setFloatArray(float *)array length(GLsizei)count forUniform(NSString*)uniformName;
-
-			[Export("")]
-			void setMatrix3f(GPUMatrix3x3)matrix forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setMatrix4f(GPUMatrix4x4)matrix forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setFloat(float)floatValue forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setPoint(PointF)pointValue forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setSize(SizeF)sizeValue forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setVec3(GPUVector3)vectorValue forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setVec4(GPUVector4)vectorValue forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setFloatArray(float *)arrayValue length(GLsizei)arrayLength forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setInteger(int)intValue forUniform(int)uniform program(GLProgram *)shaderProgram;
-
-			[Export("")]
-			void setAndExecuteUniformStateCallbackAtIndex(int)uniform forProgram(GLProgram *)shaderProgram toBlock(dispatch_block_t)uniformStateBlock;
-
-			[Export("")]
-			void setUniformsForProgramAtIndex(NSUInteger)programIndex;
-*/		
+            
 		}
 		
 
@@ -756,28 +1180,31 @@ namespace GPUImage
 			[Export("bufferSize")]
 			uint BufferSize { get; set; }
 		}
-		
-		[BaseType(typeof(GPUImageOutput))]
-		public interface GPUImageFilterGroup : GPUImageInput, GPUImageTextureDelegate
-		{
-			[Export("terminalFilter")]
-			GPUImageFilter TerminalFilter { get; set; }
-			
-			[Export("initialFilters")]
-			GPUImageFilter[] InitialFilters { get; set; }
-			
-			[Export("inputFilterToIgnoreForUpdates")]
-			GPUImageFilter InputFilterToIgnoreForUpdates { get; set; }
-			
-			[Export("addFilter")]
-			void AddFilter(GPUImageFilter newFilter);
-			
-			[Export("filterAtIndex:")]
-			GPUImageFilter FilterAtIndex(uint filterIndex);
-			
-			[Export("filterCount")]
-			int FilterCount { get; }
-		}
+        */
+
+        [BaseType(typeof(GPUImageOutput))]
+        public interface GPUImageFilterGroup : GPUImageInput //, GPUImageTextureDelegate
+        {
+            [Export("terminalFilter")]
+            GPUImageFilter TerminalFilter { get; set; }
+
+            [Export("initialFilters")]
+            GPUImageFilter[] InitialFilters { get; set; }
+
+            [Export("inputFilterToIgnoreForUpdates")]
+            GPUImageFilter InputFilterToIgnoreForUpdates { get; set; }
+
+            [Export("addFilter:")]
+            void AddFilter(GPUImageFilter newFilter);
+
+            [Export("filterAtIndex:")]
+            GPUImageFilter FilterAtIndex(uint filterIndex);
+
+            [Export("filterCount")]
+            int FilterCount { get; }
+        }
+
+        /*
 
 		[BaseType(typeof(GPUImage3x3TextureSamplingFilter))]
 		public interface GPUImageToonFilter
@@ -1055,10 +1482,7 @@ namespace GPUImage
 			float Intensity {get;set;}
 		}
 
-		[BaseType(typeof(GPUImageFilter))]
-		public interface GPUImageGrayscaleFilter
-		{
-		}
+
 
 		[BaseType(typeof(GPUImageFilter))]
 		public interface GPUImageMonochromeFilter
@@ -1079,5 +1503,166 @@ namespace GPUImage
 			float Brightness {get;set;}
 		}
 		#endregion
-	}
+  */
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageOpacityFilter
+        {
+            [Export("opacity")]
+            float Opacity { get; set; }
+        }
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageGrayscaleFilter
+        {
+        }
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageSolidColorGenerator
+        {
+            [Export("useExistingAlpha")]
+            bool UseExistingAlpha { get; set; }
+
+            [Export("color")]
+            GPUVector4 Color { get; set; }
+
+            [Export("setColorRed:green:blue:alpha:")]
+            void SetColor(float red, float green, float blue, float alpha);
+        }
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageToneCurveFilter
+        {
+            [Export("initWithACVData:")]
+            IntPtr Constructor(NSData data);
+
+            [Export("initWithACV:")]
+            IntPtr Constructor(string curveFilename);
+
+            [Export("initWithACVURL:")]
+            IntPtr Constructor(NSUrl curveFileURL);
+
+            [Export("setPointsWithACV:")]
+            void SetPointsWithACV(string curveFilename);
+
+            [Export("setPointsWithACVURL:")]
+            void SetPointsWithACVURL(NSUrl curveFileURL);
+
+
+            [Export("getPreparedSplineCurve:")]
+            NSMutableArray getPreparedSplineCurve(NSArray points);
+
+            [Export("splineCurve:")]
+            NSMutableArray SplineCurve(NSArray points);
+
+            [Export("secondDerivative:")]
+            NSMutableArray SecondDerivative(NSArray cgPoints);
+
+            [Export("updateToneCurveTexture")]
+            void UpdateToneCurveTexture();
+        }
+
+
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageColorMatrixFilter
+        {
+            [Export("colorMatrix")]
+            GPUMatrix4x4 ColorMatrix { get; set; }
+
+            [Export("intensity")]
+            float Intensity { get; set; }
+        }
+
+        [BaseType(typeof(GPUImageColorMatrixFilter))]
+        public interface GPUImageHSBFilter
+        {
+            [Export("reset")]
+            void Reset();
+
+
+            [Export("rotateHue:")]
+            void RotateHue(float h);
+
+
+            [Export("adjustSaturation:")]
+            void AdjustSaturation(float s);
+
+            [Export("adjustBrightness:")]
+            void AdjustBrightness(float b);
+        }
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageHueFilter
+        {
+            [Export("hue")]
+            float Hue { get; set; }
+        }
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageSharpenFilter
+        {
+            [Export("sharpness")]
+            float Sharpness { get; set; }
+        }
+
+
+        [BaseType(typeof(GPUImageFilter))]
+        public interface GPUImageRGBFilter
+        {
+            [Export("red")]
+            float Red { get; set; }
+
+            [Export("green")]
+            float Green { get; set; }
+
+            [Export("blue")]
+            float Blue { get; set; }
+        }
+
+
+
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageLightenBlendFilter
+        {
+
+        }
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageSoftLightBlendFilter
+        {
+
+        }
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageScreenBlendFilter
+        {
+
+        }
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageMultiplyBlendFilter
+        {
+
+        }
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageOverlayBlendFilter
+        {
+
+        }
+
+        [BaseType(typeof(GPUImageTwoInputFilter))]
+        public interface GPUImageLinearBurnBlendFilter
+        {
+
+        }
+
+
+
+
+
+
+
+    }
 }
