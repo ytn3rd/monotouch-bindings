@@ -67,10 +67,10 @@ namespace GPUImage
         void RemoveAllTargets();
 
         [Export("forceProcessingAtSize:")]
-        void ForceProcessingAtSize(SizeF frameSize);
+        void ForceProcessingAtSize(CGSize frameSize);
 
         [Export("forceProcessingAtSizeRespectingAspectRatio:")]
-        void ForceProcessingAtSizeRespectingAspectRatio(SizeF frameSize);
+        void ForceProcessingAtSizeRespectingAspectRatio(CGSize frameSize);
 
         [Export("useNextFrameForImageCapture")]
         void UseNextFrameForImageCapture();
@@ -161,14 +161,14 @@ namespace GPUImage
         int NextAvailableTextureIndex { get; }
 
         [Export("setInputSize:atIndex:")]
-        void SetInputSize(SizeF newSize, int textureIndex);
+        void SetInputSize(CGSize newSize, int textureIndex);
 
         [Export("setInputRotation:atIndex:")]
         void SetInputRotation(GPUImageRotationMode newInputRotation, int textureIndex);
 
 
         [Export("maximumOutputSize")]
-        SizeF MaximumOutputSize { get; }
+        CGSize MaximumOutputSize { get; }
 
         [Export("endProcessing")]
         void EndProcessing();
@@ -202,7 +202,7 @@ namespace GPUImage
     public interface GPUImageFramebuffer
     {
         [Export("size")]
-        SizeF Size { get; }
+        CGSize Size { get; }
 
         [Export("textureOptions")]
         GPUTextureOptions TextureOptions { get; }
@@ -214,13 +214,13 @@ namespace GPUImage
         bool MissingFramebuffer { get; }
 
         [Export("initWithSize:")]
-        IntPtr Constructor(SizeF framebufferSize);
+        IntPtr Constructor(CGSize framebufferSize);
 
         [Export("initWithSize:textureOptions:onlyTexture:")]
-        IntPtr Constructor(SizeF framebufferSize, GPUTextureOptions textureOptions, bool onlyTexture);
+        IntPtr Constructor(CGSize framebufferSize, GPUTextureOptions textureOptions, bool onlyTexture);
 
         [Export("initWithSize:overriddenTexture:")]
-        IntPtr Constructor(SizeF framebufferSize, uint inputTexture);
+        IntPtr Constructor(CGSize framebufferSize, uint inputTexture);
 
 
         [Export("activateFramebuffer")]
@@ -288,7 +288,7 @@ namespace GPUImage
         void ProcessImage();
 
         [Export("outputImageSize")]
-        SizeF OutputImageSize { get; }
+        CGSize OutputImageSize { get; }
         // Set?
 
         [Export("processImageWithCompletionHandler:")]
@@ -478,11 +478,11 @@ namespace GPUImage
 
 		// - (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize;
 		[Export ("initWithMovieURL:size:")]
-		IntPtr Constructor (NSUrl newMovieUrl, SizeF newSize);
+		IntPtr Constructor (NSUrl newMovieUrl, CGSize newSize);
 
 		// - (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize fileType:(NSString *)newFileType outputSettings:(NSDictionary *)outputSettings;
 		[Export ("initWithMovieURL:size:fileType:outputSettings:")]
-		IntPtr Constructor (NSUrl newMovieUrl, SizeF newSize, NSString newFileType, NSDictionary outputSettings);
+		IntPtr Constructor (NSUrl newMovieUrl, CGSize newSize, NSString newFileType, NSDictionary outputSettings);
 
 		// - (void)setHasAudioTrack:(BOOL)hasAudioTrack audioSettings:(NSDictionary *)audioOutputSettings;
 		[Export ("setHasAudioTrack:audioSettings")]
@@ -656,13 +656,13 @@ namespace GPUImage
 		int NextAvailableTextureIndex { get; }
 
 		[Export("setInputSize:atIndex:")]
-		void SetInputSize(SizeF newSize, int textureIndex);
+		void SetInputSize(CGSize newSize, int textureIndex);
 
 		[Export("setInputRotation:atIndex:")]
 		void SetInputRotation(GPUImageRotationMode newInputRotation, int textureIndex);
 
 		[Export("maximumOutputSize")]
-		SizeF MaximumOutputSize { get; }
+		CGSize MaximumOutputSize { get; }
 
 		[Export("endProcessing")]
 		void EndProcessing();
@@ -691,7 +691,7 @@ namespace GPUImage
         GPUImageFillModeType FillMode { get; set; }
 
         [Export("sizeInPixels")]
-        SizeF SizeInPixels { get; }
+        CGSize SizeInPixels { get; }
 
         [Export("enabled")]
         bool Enabled { get; set; }
@@ -731,8 +731,8 @@ namespace GPUImage
 		[Static, Export("setActiveShaderProgram:")]
 		void SetActiveShaderProgram(IntPtr shaderProgram);
 
-		[Static, Export("maximumTextureSizeForThisDevice")]
-		int MaximumTextureSizeForThisDevice { get; }
+		[Static, Export("maximumTextureCGSizeorThisDevice")]
+		int MaximumTextureCGSizeorThisDevice { get; }
 
 		[Static, Export("maximumTextureUnitsForThisDevice")]
 		int MaximumTextureUnitsForThisDevice { get; }
@@ -744,7 +744,7 @@ namespace GPUImage
 		bool DeviceSupportsRedTextures { get; }
 	
 		[Static, Export("sizeThatFitsWithinATextureForSize:")]
-		SizeF SizeThatFitsWithinATextureForSize(SizeF inputSize);
+		CGSize SizeThatFitsWithinATextureForSize(CGSize inputSize);
 
 		[Export("presentBufferForDisplay")]
 		void PresentBufferForDisplay();
@@ -814,10 +814,10 @@ namespace GPUImage
 		void DeleteOutputTexture();
 
 		[Export("forceProcessingAtSize:")]
-		void ForceProcessingAtSize(SizeF frameSize);
+		void ForceProcessingAtSize(CGSize frameSize);
 
 		[Export("forceProcessingAtSizeRespectingAspectRatio:")]
-		void ForceProcessingAtSizeRespectingAspectRatio(SizeF frameSize);
+		void ForceProcessingAtSizeRespectingAspectRatio(CGSize frameSize);
 
 		[Export("cleanupOutputImage")]
 		void CleanupOutputImage();
@@ -879,20 +879,20 @@ namespace GPUImage
 		void ProcessImage();
 	
 		[Export("outputImageSize")]
-		SizeF OutputImageSize { get; set; }
+		CGSize OutputImageSize { get; set; }
 	}
 
 	[BaseType(typeof(GPUImageOutput))]
 	public interface GPUImageRawDataInput
 	{
 		[Export("initWithBytes:size:")]
-		IntPtr Constructor(IntPtr bytesToUpload, SizeF imageSize);
+		IntPtr Constructor(IntPtr bytesToUpload, CGSize imageSize);
 
 		[Export("initWithBytes:size:pixelFormat:")]
-		IntPtr Constructor(IntPtr bytesToUpload, SizeF imageSize, GPUPixelFormat pixelFormat);
+		IntPtr Constructor(IntPtr bytesToUpload, CGSize imageSize, GPUPixelFormat pixelFormat);
 		
 		[Export("initWithBytes:size:pixelFormat:type:")]
-		IntPtr Constructor(IntPtr bytesToUpload, SizeF imageSize, GPUPixelFormat pixelFormat, GPUPixelType pixelType);
+		IntPtr Constructor(IntPtr bytesToUpload, CGSize imageSize, GPUPixelFormat pixelFormat, GPUPixelType pixelType);
 
 		[Export("pixelFormat")]
 		GPUPixelFormat PixelFormat { get; set; }
@@ -902,13 +902,13 @@ namespace GPUImage
 
 		// Image rendering
 		[Export("updateDataFromBytes:size:")]
-		void UpdateDataFromBytes(IntPtr bytesToUpload, SizeF imageSize);
+		void UpdateDataFromBytes(IntPtr bytesToUpload, CGSize imageSize);
 
 		[Export("processData")]
 		void ProcessData();
 
 		[Export("outputImageSize")]
-		SizeF OutputImageSize { get; set; }
+		CGSize OutputImageSize { get; set; }
 	}
  */
     namespace Filters
@@ -939,16 +939,16 @@ namespace GPUImage
             void InitializeAttributes();
 
             [Export("setupFilterForSize:")]
-            void SetupFilterForSize(SizeF filterFrameSize);
+            void SetupFilterForSize(CGSize filterFrameSize);
 
             [Export("rotatedSize:forIndex:")]
-            SizeF RotatedSize(SizeF sizeToRotate, int textureIndex);
+            CGSize RotatedSize(CGSize sizeToRotate, int textureIndex);
 
             [Export("rotatedPoint:forRotation:")]
             PointF RotatedPoint(PointF pointToRotate, GPUImageRotationMode rotation);
 
             [Export("sizeOfFBO")]
-            SizeF SizeOfFBO { get; }
+            CGSize SizeOfFBO { get; }
 
             //[Static, Export("textureCoordinatesForRotation:")]
             //float [] TextureCoordinatesForRotation(GPUImageRotationMode rotationMode);
@@ -962,7 +962,7 @@ namespace GPUImage
             void InformTargetsAboutNewFrameAtTime(CMTime frameTime);
 
             [Export("outputFrameSize")]
-            SizeF OutputFrameSize { get; }
+            CGSize OutputFrameSize { get; }
 
 
             [Export("setBackgroundColorRed:green:blue:alpha:")]
@@ -975,7 +975,7 @@ namespace GPUImage
             void SetFloat(float val, string uniformName);
 
             [Export("setSize:forUniformName:")]
-            void SetSize(SizeF val, string uniformName);
+            void SetSize(CGSize val, string uniformName);
 
             [Export("setPoint:forUniformName:")]
             void SetPoint(PointF val, string uniformName);
@@ -1004,7 +1004,7 @@ namespace GPUImage
             void setPoint(PointF)pointValue forUniform(int)uniform program(GLProgram *)shaderProgram;
 
             [Export("")]
-            void setSize(SizeF)sizeValue forUniform(int)uniform program(GLProgram *)shaderProgram;
+            void setSize(CGSize)sizeValue forUniform(int)uniform program(GLProgram *)shaderProgram;
 
             [Export("")]
             void setVec3(GPUVector3)vectorValue forUniform(int)uniform program(GLProgram *)shaderProgram;
@@ -1030,7 +1030,7 @@ namespace GPUImage
             //void RecreateFilterFBO();
 
             [Export("createFilterFBOofSize:")]
-            void CreateFilterFBOofSize(SizeF currentFBOSize);
+            void CreateFilterFBOofSize(CGSize currentFBOSize);
 
             [Export("destroyFilterFBO")]
             void DestroyFilterFBO();
@@ -1054,6 +1054,10 @@ namespace GPUImage
         [BaseType(typeof(GPUImageFilter))]
         public interface GPUImageTwoInputFilter
         {
+
+            [Export("initWithFragmentShaderFromString:")]
+            IntPtr Constructor(string fragmentShaderString);
+
             [Export("disableFirstFrameCheck")]
             void DisableFirstFrameCheck();
 
@@ -1071,7 +1075,11 @@ namespace GPUImage
         public interface GPUImageAlphaBlendFilter
         {
             [Export("mix")]
-            float Mix { get; set; }
+            nfloat Mix { get; set; }
+
+
+            //[Export("setMix:")]
+            //void SetMix(float newValue);
         }
 
 
@@ -1102,10 +1110,10 @@ namespace GPUImage
 			void InitializeAttributes();
 			
 			[Export("setupFilterForSize:")]
-			void SetupFilterForSize(SizeF filterFrameSize);
+			void SetupFilterForSize(CGSize filterFrameSize);
 			
 			[Export("rotatedSize:forIndex:")]
-			SizeF RotatedSize(SizeF sizeToRotate, int textureIndex);
+			CGSize RotatedSize(CGSize sizeToRotate, int textureIndex);
 			
 			[Export("rotatedPoint:forRotation:")]
 			PointF RotatedPoint(PointF pointToRotate, GPUImageRotationMode rotation);
@@ -1114,10 +1122,10 @@ namespace GPUImage
 			void RecreateFilterFBO();
 			
 			[Export("sizeOfFBO")]
-			SizeF SizeOfFBO { get; }
+			CGSize SizeOfFBO { get; }
 			
 			[Export("createFilterFBOofSize:")]
-			void CreateFilterFBOofSize(SizeF currentFBOSize);
+			void CreateFilterFBOofSize(CGSize currentFBOSize);
 			
 			[Export("destroyFilterFBO")]
 			void DestroyFilterFBO();
@@ -1138,7 +1146,7 @@ namespace GPUImage
 			void InformTargetsAboutNewFrameAtTime(CMTime frameTime);
 			
 			//[Export("")]
-			//SizeF outputFrameSize;
+			//CGSize outputFrameSize;
 			
 			[Export("setBackgroundColorRed:green:blue:alpha:")]
 			void SetBackgroundColor(float redComponent, float green, float blue, float alpha);
@@ -1345,7 +1353,7 @@ namespace GPUImage
 			PointF Center { get; set; }
 
 			[Export("pixelSize")]
-			SizeF PixelSize { get; set; }
+			CGSize PixelSize { get; set; }
 		}
 
 		[BaseType(typeof(GPUImageFilter))]
@@ -1417,7 +1425,7 @@ namespace GPUImage
 		public interface GPUImageLanczosResamplingFilter
 		{
 			[Export("originalImageSize")]
-			SizeF OriginalImageSize { get; set; }
+			CGSize OriginalImageSize { get; set; }
 		}
 
 
@@ -1459,7 +1467,7 @@ namespace GPUImage
 		public interface GPUImageJFAVoronoiFilter
 		{
 			[Export("sizeInPixels")]
-			SizeF SizeInPixels { get; set; }
+			CGSize SizeInPixels { get; set; }
 		}
 
 		[BaseType(typeof(GPUImageFilter))]
@@ -1570,7 +1578,7 @@ namespace GPUImage
             GPUMatrix4x4 ColorMatrix { get; set; }
 
             [Export("intensity")]
-            float Intensity { get; set; }
+            nfloat Intensity { get; set; }
         }
 
         [BaseType(typeof(GPUImageColorMatrixFilter))]
@@ -1595,14 +1603,14 @@ namespace GPUImage
         public interface GPUImageHueFilter
         {
             [Export("hue")]
-            float Hue { get; set; }
+            nfloat Hue { get; set; }
         }
 
         [BaseType(typeof(GPUImageFilter))]
         public interface GPUImageSharpenFilter
         {
             [Export("sharpness")]
-            float Sharpness { get; set; }
+            nfloat Sharpness { get; set; }
         }
 
 
@@ -1610,13 +1618,13 @@ namespace GPUImage
         public interface GPUImageRGBFilter
         {
             [Export("red")]
-            float Red { get; set; }
+            nfloat Red { get; set; }
 
             [Export("green")]
-            float Green { get; set; }
+            nfloat Green { get; set; }
 
             [Export("blue")]
-            float Blue { get; set; }
+            nfloat Blue { get; set; }
         }
 
 
